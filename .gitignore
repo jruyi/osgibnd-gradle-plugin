@@ -1,0 +1,15 @@
+.DS_Store
+.DS_Store?
+._*
+.Trashes
+.Spotlight-V100
+.project
+.classpath
+.settings
+target
+.idea
+*.iml
+.gradle
+.nb-gradle
+build
+
