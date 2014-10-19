@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jruyi.osgi.gradle.plugin
+package org.jruyi.gradle.osgi.plugin
 
 import aQute.bnd.osgi.Builder
 import aQute.bnd.osgi.Constants

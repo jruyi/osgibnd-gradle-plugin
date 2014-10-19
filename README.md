@@ -8,16 +8,14 @@ To use this plugin, add the following to your build script.
 ```groovy
 buildscript {
 	repositories {
-		maven {
-			url 'http://repo.jruyi.org/maven/releases/'
-		}
+		jcenter()
 	}
 	dependencies {
-		classpath 'org.jruyi:osgibnd-gradle-plugin:0.1.0'
+		classpath 'org.jruyi.gradle:osgibnd-gradle-plugin:0.2.0'
 	}
 }
 
-apply plugin: 'osgibnd'
+apply plugin: 'org.jruyi.osgibnd'
 ```
 
 ### Implicitly Applied Plugins
