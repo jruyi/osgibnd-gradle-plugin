@@ -21,7 +21,7 @@ apply plugin: 'maven-publish'
 
 group = 'org.jruyi.gradle'
 archivesBaseName = 'osgibnd-gradle-plugin'
-version = '0.2.0'
+version = '0.3.0-SNAPSHOT'
 description = 'A gradle plugin for creating OSGi bundles'
 
 repositories {

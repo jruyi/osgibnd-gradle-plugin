@@ -24,15 +24,20 @@ import java.util.regex.Pattern
 
 class Helper {
 
-	static Map<String, ?> getProperties(Project project) {
-		Map<String, ?> properties = new LinkedHashMap(project.jar.manifest.effectiveManifest.attributes)
+	static Properties getProperties(Project project) {
+		Properties props = new Properties();
+		project.jar.manifest.effectiveManifest.attributes.each { name, value ->
+			if (value != null)
+				props[name.toString()] = value.toString().trim()
+		}
+
 		Map<String, ?> projProps = project.properties
-		handleBundleName(properties, projProps, project.name)
-		handleBundleDesc(properties, project)
-		handleBundleDocUrl(properties, projProps)
-		handleBundleVendor(properties, projProps)
-		handleBundleLicense(properties, projProps)
-		properties
+		handleBundleName(props, projProps, project.name)
+		handleBundleDesc(props, project)
+		handleBundleDocUrl(props, projProps)
+		handleBundleVendor(props, projProps)
+		handleBundleLicense(props, projProps)
+		props
 	}
 
 	static File check(File file) {
@@ -70,7 +75,7 @@ class Helper {
 	}
 
 	static String getVersion(Project project) {
-		String version = project.version
+		String version = project.version == null ? null : project.version.toString().trim()
 		if (version == null || version.empty)
 			throw new GradleException("Project version is not specified")
 
@@ -164,7 +169,7 @@ class Helper {
 			return
 		}
 
-		String group = project.getGroup().toString()
+		String group = project.getGroup().toString().trim()
 		String archiveBaseName = project.jar.baseName
 		if (archiveBaseName == null || archiveBaseName.empty) {
 			archiveBaseName = project.archivesBaseName
@@ -221,19 +226,20 @@ class Helper {
 		return sb.toString()
 	}
 
-	private static handleBundleDesc(Map<String, Object> properties, Project project) {
-		String desc = properties[Constants.BUNDLE_DESCRIPTION];
+	private static handleBundleDesc(Properties properties, Project project) {
+		String desc = properties[Constants.BUNDLE_DESCRIPTION]
 		if (desc == null || desc.empty) {
-			desc = project.description
+			desc = project.description == null ? null : project.description.toString().trim()
 			if (desc != null && !desc.empty)
 				properties[Constants.BUNDLE_DESCRIPTION] = desc
 		}
 	}
 
-	private static handleBundleName(Map<String, Object> properties, Map<String, ?> projProps, String projName) {
+	private static handleBundleName(Properties properties, Map<String, ?> projProps, String projName) {
 		String name = properties[Constants.BUNDLE_NAME]
 		if (name == null || name.empty) {
-			name = projProps['title']
+			def v = projProps['title']
+			name = v == null ? null : v.toString().trim()
 			if (name != null && !name.empty)
 				properties[Constants.BUNDLE_NAME] = name
 			else
@@ -244,7 +250,8 @@ class Helper {
 	private static handleBundleVendor(Map<String, Object> properties, Map<String, ?> projProps) {
 		String vendor = properties[Constants.BUNDLE_VENDOR]
 		if (vendor == null || vendor.empty) {
-			vendor = projProps['organizationName']
+			def v = projProps['organizationName']
+			vendor = v == null ? null : v.toString().trim();
 			if (vendor != null && !vendor.empty)
 				properties[Constants.BUNDLE_VENDOR] = vendor
 		}
@@ -253,7 +260,8 @@ class Helper {
 	private static handleBundleDocUrl(Map<String, Object> properties, Map<String, ?> projProps) {
 		String docUrl = properties[Constants.BUNDLE_DOCURL]
 		if (docUrl == null || docUrl.empty) {
-			docUrl = projProps['organizationUrl']
+			def v = projProps['organizationUrl']
+			docUrl = v == null ? null : v.toString().trim()
 			if (docUrl != null && !docUrl.empty)
 				properties[Constants.BUNDLE_DOCURL] = docUrl
 		}
@@ -262,7 +270,8 @@ class Helper {
 	private static handleBundleLicense(Map<String, Object> properties, Map<String, ?> projProps) {
 		String licenseUrl = properties[Constants.BUNDLE_LICENSE]
 		if (licenseUrl == null || licenseUrl.empty) {
-			licenseUrl = projProps['licenseUrl']
+			def v = projProps['licenseUrl']
+			licenseUrl = v == null ? null : v.toString().trim()
 			if (licenseUrl != null && !licenseUrl.empty)
 				properties[Constants.BUNDLE_LICENSE] = licenseUrl
 		}
@@ -274,8 +283,8 @@ class Helper {
 		classes.each { File file ->
 			if (file.name.endsWith(".class")) {
 				String packageName = file.parent
-				if (parent != null)
-					packageNames.add(parent)
+				if (packageName != null)
+					packageNames.add(packageName)
 			}
 		}
 
