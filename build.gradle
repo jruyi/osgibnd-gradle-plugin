@@ -13,7 +13,7 @@
  */
 
 plugins {
-	id "com.jfrog.bintray" version "0.6"
+	id 'com.jfrog.bintray' version '1.1'
 }
 
 apply plugin: 'groovy'
@@ -52,7 +52,7 @@ dependencies {
 	compile gradleApi()
 	compile localGroovy()
 
-	embed 'biz.aQute.bnd:bndlib:2.3.0'
+	embed 'biz.aQute.bnd:biz.aQute.bndlib:2.4.1'
 }
 
 compileGroovy {
@@ -138,7 +138,7 @@ bintray {
 		issueTrackerUrl = 'https://github.com/jruyi/osgibnd-gradle-plugin/issues'
 		vcsUrl = 'https://github.com/jruyi/osgibnd-gradle-plugin.git'
 		licenses = ['Apache-2.0']
-		labels = ['osgi', 'bnd']
+		labels = ['osgi', 'bnd', 'bundle', 'gradle', 'plugin']
 		publicDownloadNumbers = true
 		version {
 			name = project.version
@@ -149,5 +149,5 @@ bintray {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.1'
+	gradleVersion = '2.3'
 }
