@@ -13,7 +13,7 @@
  */
 
 plugins {
-	id 'com.jfrog.bintray' version '1.1'
+	id 'com.gradle.plugin-publish' version '0.9.1'
 }
 
 apply plugin: 'groovy'
@@ -21,15 +21,15 @@ apply plugin: 'maven-publish'
 
 group = 'org.jruyi.gradle'
 archivesBaseName = 'osgibnd-gradle-plugin'
-version = '0.3.0'
+version = '0.4.0-SNAPSHOT'
 description = 'A gradle plugin for creating OSGi bundles'
 
 repositories {
-	mavenCentral()
+	jcenter()
 }
 
 ext {
-	title = 'OSGiBnd Gradle Plugin'
+	title = 'Gradle OSGiBnd Plugin'
 	organizationId = 'org.jruyi'
 	organizationName = 'JRuyi.org'
 	organizationUrl = 'http://www.jruyi.org/'
@@ -52,7 +52,7 @@ dependencies {
 	compile gradleApi()
 	compile localGroovy()
 
-	embed 'biz.aQute.bnd:biz.aQute.bndlib:2.4.1'
+	embed 'biz.aQute.bnd:biz.aQute.bndlib:3.0.0'
 }
 
 compileGroovy {
@@ -90,11 +90,6 @@ jar {
 	}
 }
 
-task sourcesJar(type: Jar) {
-	from sourceSets.main.allSource
-	classifier = 'sources'
-}
-
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
@@ -107,7 +102,6 @@ publishing {
 				def projectNode = asNode()
 				projectNode.appendNode('name', title)
 				projectNode.appendNode('description', description)
-				projectNode.appendNode('url', organizationUrl)
 
 				def organizationNode = projectNode.appendNode('organization')
 				organizationNode.appendNode('name', organizationName)
@@ -118,36 +112,20 @@ publishing {
 				licenseNode.appendNode('url', licenseUrl)
 				licenseNode.appendNode('distribution', 'repo')
 			}
-
-			artifact sourcesJar
 		}
 	}
 }
 
-bintray {
-	user = bintrayUser
-	key = bintrayApiKey
-	publications = ['mavenJava']
-	publish = true
-	pkg {
-		repo = 'maven'
-		userOrg = 'jruyi'
-		name = archivesBaseName
-		desc = description
-		websiteUrl = 'https://github.com/jruyi/osgibnd-gradle-plugin'
-		issueTrackerUrl = 'https://github.com/jruyi/osgibnd-gradle-plugin/issues'
-		vcsUrl = 'https://github.com/jruyi/osgibnd-gradle-plugin.git'
-		licenses = ['Apache-2.0']
-		labels = ['osgi', 'bnd', 'bundle', 'gradle', 'plugin']
-		publicDownloadNumbers = true
-		version {
-			name = project.version
-			vcsTag = "v${project.version}"
-			attributes = ['gradle-plugin': 'org.jruyi.osgibnd:org.jruyi.gradle:osgibnd-gradle-plugin']
+pluginBundle {
+	website = 'https://github.com/jruyi/osgibnd-gradle-plugin'
+	vcsUrl = 'https://github.com/jruyi/osgibnd-gradle-plugin.git'
+	description = project.description
+	tags = ['osgi', 'bnd', 'bundle']
+
+	plugins {
+		osgibndPlugin {
+			id = 'org.jruyi.osgibnd'
+			displayName = title
 		}
 	}
-}
-
-task wrapper(type: Wrapper) {
-	gradleVersion = '2.3'
 }
