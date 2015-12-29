@@ -13,7 +13,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "gradle.plugin.org.jruyi.gradle:osgibnd-gradle-plugin:0.4.0"
+		classpath "gradle.plugin.org.jruyi.gradle:osgibnd-gradle-plugin:0.5.0"
 	}
 }
 
@@ -24,7 +24,7 @@ Or for gradle 2.1+
 
 ```groovy
 plugins {
-	id "org.jruyi.osgibnd" version "0.4.0"
+	id "org.jruyi.osgibnd" version "0.5.0"
 }
 ```
 
@@ -68,7 +68,7 @@ Basically, the symbolic name is generated as project.group + '.' + project.jar.b
 
 * \<Bundle-Description\> is set to project.description if provided
 
-* \<Bundle-Vendor\> is set to project property 'organizationName' if Bundle-Description is not provided in manifest and property organizationName is provided
+* \<Bundle-Vendor\> is set to project property 'organizationName' if Bundle-Vendor is not provided in manifest and property organizationName is provided
 
 * \<Bundle-DocURL\> is set to project property 'organizationUrl' if Bundle-DocURL is not provided in manifest and property organizationUrl is provided
 
